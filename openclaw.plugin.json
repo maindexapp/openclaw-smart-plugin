@@ -1,0 +1,28 @@
+{
+  "id": "maindex",
+  "name": "Maindex",
+  "version": "1.0.0",
+  "description": "Persistent relational memory for AI agents. A streamlined knowledge graph with four intuitive tools for storing, searching, updating, and managing memories — connected via MCP with OAuth.",
+  "kind": "tooling",
+  "skills": ["skills"],
+  "configSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "baseUrl": {
+        "type": "string",
+        "default": "https://maindex.io/mcp",
+        "description": "Maindex MCP server URL"
+      },
+      "authMode": {
+        "type": "string",
+        "enum": ["oauth", "apiKey"],
+        "default": "oauth",
+        "description": "Authentication mode: oauth (browser-based) or apiKey (manual)"
+      }
+    }
+  },
+  "homepage": "https://maindex.io",
+  "repository": "https://github.com/maindexapp/openclaw-smart-plugin",
+  "license": "MIT"
+}

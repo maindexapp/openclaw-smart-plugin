@@ -1,0 +1,32 @@
+{
+  "name": "@maindex/openclaw-plugin",
+  "version": "1.0.0",
+  "description": "Maindex plugin for OpenClaw — persistent relational memory via MCP with OAuth",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": ["openclaw", "openclaw-plugin", "maindex", "memory", "mcp", "knowledge-graph"],
+  "author": "Maindex",
+  "license": "MIT",
+  "homepage": "https://maindex.io",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/maindexapp/openclaw-smart-plugin.git"
+  },
+  "openclaw": {
+    "type": "plugin",
+    "displayName": "Maindex",
+    "minGatewayVersion": "2026.2.0"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.5.0"
+  }
+}
