@@ -2,6 +2,8 @@
 
 Persistent, relational memory for AI agents and their humans.
 
+[Website](https://maindex.io) | [Help & FAQ](https://maindex.io/help) | [Dashboard](https://maindex.io/dashboard)
+
 This plugin connects OpenClaw to **Maindex Smart** — a streamlined knowledge graph with four intuitive tools:
 
 - **maindex_keep** — store a new memory
@@ -33,4 +35,4 @@ If you need direct access to the full Maindex API — typed associations, collec
 ## Learn More
 
 - [maindex.io](https://maindex.io)
-- [Documentation](https://docs.maindex.io)
+- [Help & FAQ](https://maindex.io/help)
