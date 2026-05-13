@@ -30,7 +30,7 @@ The plugin supports two authentication modes:
 
 If you need direct access to the full Maindex API — typed associations, collections, bulk operations, graph traversal, and MCP resources — use the **Expert** plugin:
 
-- [openclaw-expert-plugin](https://github.com/maindexapp/openclaw-expert-plugin) — 14 tools + 6 resources (prefixed with `maindex_`)
+- [openclaw-expert-plugin](https://github.com/maindexapp/openclaw-expert-plugin) — 14 tools + 5 resources (prefixed with `maindex_`)
 
 ## Learn More
 
