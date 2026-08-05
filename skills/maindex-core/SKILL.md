@@ -56,6 +56,16 @@ When a fact or decision changes, supersede rather than deleting and recreating. 
 
 Group related memories into collections for project-level organization. A memory can belong to multiple collections.
 
+### Teams Workspaces
+
+Team workspaces let groups share a scoped slice of the same memory graph.
+
+- **Personal vs team** — Personal memories omit `team`. Team memories are written with `team` + `collection` (both required for team writes).
+- **Roles** — Effective permissions depend on your team role (`owner`, `manager`, `member`). Managers can create team collections and invite members; members can contribute to granted collections.
+- **Scoped reads** — Use `team` on search/list/recall to focus on one workspace, or `"personal"` for personal-only results.
+- **Team-namespaced IDs** — Team memories may use IDs like `team-slug:mem-xxxx` alongside standard `mem-xxxx` short IDs.
+- **Frozen teams** — Billing or admin freezes can exclude a team's content from mixed results until resolved in the dashboard.
+
 ### Linking
 
 Create typed associations between memories. Use specific relation types:
@@ -106,7 +116,7 @@ When storing with `maindex_keep`, provide clear content and use tags for organiz
 
 As you work with the user's knowledge:
 
-- **Update memories** when information changes. Use `maindex_update` to revise content while preserving history.
+- **Update memories** when information changes. Use `update` to revise content while preserving history.
 - **Remove outdated information** when the user confirms something is no longer relevant. Use `maindex_forget` for clean removal.
 - **Suggest organization** when you notice patterns — recommend tags or collections to keep things findable.
 
@@ -137,7 +147,7 @@ You have access to four Maindex Smart tools:
 
 - `maindex_keep` — store a new memory
 - `maindex_recall` — search and retrieve memories
-- `maindex_update` — revise an existing memory
+- `update` — revise an existing memory
 - `maindex_forget` — remove a memory
 
 Maindex Smart provides four streamlined tools for memory management. The Smart pipeline handles retrieval strategy, optional LLM-assisted rewriting, and synthesis automatically.
@@ -147,14 +157,24 @@ Maindex Smart provides four streamlined tools for memory management. The Smart p
 | Goal | Tool |
 |---|---|
 | Save a new memory | `maindex_keep` |
+| Save into a team collection | `maindex_keep` with `team` + `collection` |
 | Search, browse, or retrieve memories | `maindex_recall` |
-| Update an existing memory by ID | `maindex_update` |
+| Search within a team workspace | `maindex_recall` with `team` |
+| Update an existing memory by ID | `update` |
+| Move a team memory to another team collection | `update` with `changes.collection` |
 | Delete a memory (soft-delete or permanent wipe) | `maindex_forget` |
+
+### Teams Workspaces
+
+- **`maindex_keep`** — Provide `team` (slug) and `collection` (team collection slug) together when writing into a team collection. Personal writes omit both.
+- **`maindex_recall`** — Optional `team` limits results to a team workspace. `target_id` may be team-namespaced: `team-slug:mem-xxxx`.
+- **`update`** — `target_id` accepts team-namespaced IDs. `changes.collection` moves a memory to another collection within the same team.
+- **`maindex_forget`** — `target_id` accepts team-namespaced IDs.
 
 ### Tool Details
 
 #### keep
-Store a new memory. Provide `content` (required, 1-100k chars). Optionally include `headline` (Smart generates one if omitted), `tags` (up to 50), `collections` (up to 20), and `metadata`. The `rewrite` flag defaults to false — content is stored exactly as provided unless you explicitly opt in with `rewrite: true` for LLM-assisted clarity improvement. Not idempotent — calling twice creates two memories.
+Store a new memory. Provide `content` (required, 1-100k chars). Optionally include `headline` (Smart generates one if omitted), `tags` (up to 50), `collections` (up to 20, personal scope), `metadata`, and for team writes `team` + `collection` (both required together). The `rewrite` flag defaults to false — content is stored exactly as provided unless you explicitly opt in with `rewrite: true` for LLM-assisted clarity improvement. Not idempotent — calling twice creates two memories.
 
 #### recall
 Search and retrieve memories. Modes:
@@ -164,10 +184,10 @@ Search and retrieve memories. Modes:
 - `history` — full revision trail
 - `recent` — newest first, no query needed
 
-`query` is required unless mode is `recent`. Optional `limit` (1-100, default 20) and `filters` for `tags` and `collections`. Read-only and idempotent.
+`query` is required unless mode is `recent`. Optional `limit` (1-100, default 20), `team` (team slug filter), and `filters` for `tags` and `collections`. Read-only and idempotent.
 
 #### update
-Update an existing memory by `target_id` (mem-* short ID). Provide `changes` with at least one of: `content`, `headline`, `tags`, `metadata`. Tags are additive. Each update creates a new revision (full history preserved). The `rewrite` flag defaults to false — content is stored exactly as provided unless explicitly opted in.
+Update an existing memory by `target_id` (mem-* short ID or `team-slug:mem-xxxx`). Provide `changes` with at least one of: `content`, `headline`, `tags`, `metadata`, `collections` (personal), or `collection` (team collection move within the same team). Tags are additive. Each update creates a new revision (full history preserved). The `rewrite` flag defaults to false — content is stored exactly as provided unless explicitly opted in.
 
 #### forget
-Soft-delete a memory by `target_id` (mem-* short ID). Default behavior is a safe, reversible soft-delete. With `wipe_history: true`, permanently purges all revisions (IRREVERSIBLE) — requires `confirm_irreversible_wipe: true` or returns a confirmation prompt instead. Idempotent for soft-delete.
+Soft-delete a memory by `target_id` (mem-* short ID or `team-slug:mem-xxxx`). Default behavior is a safe, reversible soft-delete. With `wipe_history: true`, permanently purges all revisions (IRREVERSIBLE) — requires `confirm_irreversible_wipe: true` or returns a confirmation prompt instead. Idempotent for soft-delete.

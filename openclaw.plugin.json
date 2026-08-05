@@ -1,7 +1,7 @@
 {
   "id": "maindex",
   "name": "Maindex",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Persistent relational memory for AI agents. A streamlined knowledge graph with four intuitive tools for storing, searching, updating, and managing memories — connected via MCP with OAuth.",
   "kind": "tooling",
   "skills": ["skills"],
